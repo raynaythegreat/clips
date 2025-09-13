@@ -3,7 +3,10 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  output: 'export',
+  trailingSlash: true,
   images: {
+    unoptimized: true,
     domains: ['img.youtube.com', 'i.ytimg.com'],
   },
   webpack: (config) => {
