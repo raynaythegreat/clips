@@ -32,12 +32,28 @@ export default function LandingPage() {
           </h1>
           
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            AI-powered tool that creates viral clips from your videos, 
+            Paste any YouTube URL (channel or video) and our AI will create viral clips 
             optimized for TikTok, Instagram, and YouTube Shorts.
           </p>
 
-          <Link href="/auth/signup" className="btn-primary text-lg">
-            Get Started
+          <div className="max-w-md mx-auto mb-8">
+            <div className="flex">
+              <input
+                type="url"
+                placeholder="https://youtube.com/watch?v=..."
+                className="flex-1 px-4 py-3 border border-gray-200 rounded-l focus:outline-none focus:border-black"
+              />
+              <button className="btn-primary rounded-l-none">
+                Create Clips
+              </button>
+            </div>
+            <p className="text-sm text-gray-500 mt-2 text-center">
+              Works with YouTube videos and channels
+            </p>
+          </div>
+
+          <Link href="/auth/signup" className="text-gray-600 hover:text-black">
+            Or sign up to save your clips
           </Link>
         </div>
       </div>

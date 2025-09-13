@@ -51,6 +51,55 @@
   }
 }
 
+/* Tablet and mobile optimizations */
+@media (max-width: 1024px) {
+  .btn-primary,
+  .btn-secondary {
+    min-height: 48px;
+    min-width: 48px;
+    font-size: 16px;
+  }
+  
+  .input-field {
+    min-height: 48px;
+    font-size: 16px;
+  }
+  
+  /* Larger touch targets for tablets */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Tablet specific optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+  
+  .grid {
+    gap: 1.5rem;
+  }
+}
+
+/* Mobile specific optimizations */
+@media (max-width: 767px) {
+  .container {
+    padding: 0 0.75rem;
+  }
+  
+  .grid {
+    gap: 1rem;
+  }
+  
+  /* Stack elements vertically on mobile */
+  .flex-row {
+    flex-direction: column;
+  }
+}
+
 /* Safe area handling for notched devices */
 @supports (padding: max(0px)) {
   .safe-area-top {
