@@ -70,7 +70,7 @@ export default function AddSocialAccountModal({ onClose, onAccountAdded }: AddSo
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg max-w-md w-full p-6">
+      <div className="bg-white rounded max-w-md w-full p-6">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-medium text-gray-900">Add Social Media Account</h3>
           <button
@@ -88,7 +88,7 @@ export default function AddSocialAccountModal({ onClose, onAccountAdded }: AddSo
             </label>
             <div className="space-y-2">
               {platforms.map((platform) => (
-                <label key={platform.value} className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                <label key={platform.value} className="flex items-center p-3 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer">
                   <input
                     {...register('platform')}
                     type="radio"
@@ -143,9 +143,9 @@ export default function AddSocialAccountModal({ onClose, onAccountAdded }: AddSo
             </p>
           </div>
 
-          <div className="bg-blue-50 p-4 rounded-lg">
-            <h4 className="font-medium text-blue-900 mb-2">How it works:</h4>
-            <ul className="text-sm text-blue-800 space-y-1">
+          <div className="bg-gray-50 p-4 rounded">
+            <h4 className="font-medium text-gray-900 mb-2">How it works:</h4>
+            <ul className="text-sm text-gray-700 space-y-1">
               <li>• We use headless browser automation to post your clips</li>
               <li>• Your credentials are encrypted and stored securely</li>
               <li>• You can remove your account at any time</li>

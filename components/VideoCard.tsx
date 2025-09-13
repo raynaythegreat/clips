@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { 
   PlayIcon, 
   ScissorsIcon, 
@@ -80,10 +79,7 @@ export default function VideoCard({ video, onVideoUpdated }: VideoCardProps) {
 
   return (
     <>
-      <motion.div
-        whileHover={{ y: -2 }}
-        className="card overflow-hidden"
-      >
+      <div className="card overflow-hidden">
         {/* Thumbnail */}
         <div className="relative aspect-video bg-gray-200">
           {video.thumbnail ? (
@@ -157,7 +153,7 @@ export default function VideoCard({ video, onVideoUpdated }: VideoCardProps) {
             </button>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Create Clip Modal */}
       {isCreateClipModalOpen && (

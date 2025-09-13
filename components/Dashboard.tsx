@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
 import { 
   PlusIcon, 
   VideoCameraIcon, 
@@ -102,127 +101,86 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b safe-area-top">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header className="border-b">
+        <div className="max-w-4xl mx-auto px-6">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-primary-600">ViralClips</h1>
+              <h1 className="text-xl font-semibold">ViralClips</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <UserIcon className="w-5 h-5 text-gray-500" />
-                <span className="text-sm text-gray-700">{session?.user?.name}</span>
-              </div>
+              <span className="text-sm text-gray-600">{session?.user?.name}</span>
               <button
                 onClick={handleSignOut}
-                className="flex items-center space-x-1 text-gray-500 hover:text-gray-700"
+                className="text-sm text-gray-600 hover:text-black"
               >
-                <ArrowRightOnRectangleIcon className="w-5 h-5" />
-                <span className="text-sm">Sign out</span>
+                Sign out
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-4xl mx-auto px-6 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
             Welcome back, {session?.user?.name}!
           </h2>
           <p className="text-gray-600">
-            Create viral clips from your videos and grow your social media presence.
+            Create viral clips from your videos.
           </p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="card p-6"
-          >
-            <div className="flex items-center">
-              <div className="bg-primary-100 p-3 rounded-lg">
-                <VideoCameraIcon className="w-6 h-6 text-primary-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Videos</p>
-                <p className="text-2xl font-bold text-gray-900">{videos.length}</p>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="card p-6"
-          >
-            <div className="flex items-center">
-              <div className="bg-green-100 p-3 rounded-lg">
-                <ScissorsIcon className="w-6 h-6 text-green-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Clips</p>
-                <p className="text-2xl font-bold text-gray-900">{clips.length}</p>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="card p-6"
-          >
-            <div className="flex items-center">
-              <div className="bg-blue-100 p-3 rounded-lg">
-                <PlayIcon className="w-6 h-6 text-blue-600" />
-              </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Completed</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {clips.filter(clip => clip.status === 'COMPLETED').length}
-                </p>
-              </div>
-            </div>
-          </motion.div>
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="text-center">
+            <p className="text-2xl font-semibold text-gray-900">{videos.length}</p>
+            <p className="text-sm text-gray-600">Videos</p>
+          </div>
+          <div className="text-center">
+            <p className="text-2xl font-semibold text-gray-900">{clips.length}</p>
+            <p className="text-sm text-gray-600">Clips</p>
+          </div>
+          <div className="text-center">
+            <p className="text-2xl font-semibold text-gray-900">
+              {clips.filter(clip => clip.status === 'COMPLETED').length}
+            </p>
+            <p className="text-sm text-gray-600">Ready</p>
+          </div>
         </div>
 
         {/* Tabs */}
         <div className="mb-6">
-          <div className="border-b border-gray-200">
-            <nav className="-mb-px flex space-x-8">
+          <div className="border-b">
+            <nav className="flex space-x-8">
               <button
                 onClick={() => setActiveTab('videos')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                className={`py-2 border-b-2 font-medium text-sm ${
                   activeTab === 'videos'
-                    ? 'border-primary-500 text-primary-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-black text-black'
+                    : 'border-transparent text-gray-500 hover:text-black'
                 }`}
               >
                 Videos ({videos.length})
               </button>
               <button
                 onClick={() => setActiveTab('clips')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                className={`py-2 border-b-2 font-medium text-sm ${
                   activeTab === 'clips'
-                    ? 'border-primary-500 text-primary-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-black text-black'
+                    : 'border-transparent text-gray-500 hover:text-black'
                 }`}
               >
                 Clips ({clips.length})
               </button>
               <button
                 onClick={() => setActiveTab('accounts')}
-                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                className={`py-2 border-b-2 font-medium text-sm ${
                   activeTab === 'accounts'
-                    ? 'border-primary-500 text-primary-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-black text-black'
+                    : 'border-transparent text-gray-500 hover:text-black'
                 }`}
               >
                 Social Accounts
@@ -247,7 +205,6 @@ export default function Dashboard() {
 
             {videos.length === 0 ? (
               <div className="text-center py-12">
-                <VideoCameraIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">No videos yet</h3>
                 <p className="text-gray-600 mb-4">Add your first video to start creating viral clips.</p>
                 <button
@@ -258,16 +215,9 @@ export default function Dashboard() {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {videos.map((video, index) => (
-                  <motion.div
-                    key={video.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <VideoCard video={video} onVideoUpdated={fetchVideos} />
-                  </motion.div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {videos.map((video) => (
+                  <VideoCard key={video.id} video={video} onVideoUpdated={fetchVideos} />
                 ))}
               </div>
             )}
@@ -278,21 +228,13 @@ export default function Dashboard() {
             
             {clips.length === 0 ? (
               <div className="text-center py-12">
-                <ScissorsIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-gray-900 mb-2">No clips yet</h3>
                 <p className="text-gray-600 mb-4">Create clips from your videos to see them here.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {clips.map((clip, index) => (
-                  <motion.div
-                    key={clip.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <ClipCard clip={clip} onClipUpdated={fetchClips} />
-                  </motion.div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {clips.map((clip) => (
+                  <ClipCard key={clip.id} clip={clip} onClipUpdated={fetchClips} />
                 ))}
               </div>
             )}

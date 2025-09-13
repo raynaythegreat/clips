@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { 
   PlayIcon, 
   PencilIcon, 
@@ -138,10 +137,7 @@ export default function ClipCard({ clip, onClipUpdated }: ClipCardProps) {
 
   return (
     <>
-      <motion.div
-        whileHover={{ y: -2 }}
-        className="card overflow-hidden"
-      >
+      <div className="card overflow-hidden">
         {/* Video thumbnail with clip overlay */}
         <div className="relative aspect-video bg-gray-200">
           {clip.video.thumbnail ? (
@@ -238,7 +234,7 @@ export default function ClipCard({ clip, onClipUpdated }: ClipCardProps) {
             </button>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* Edit Clip Modal */}
       {isEditModalOpen && (
