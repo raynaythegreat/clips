@@ -15,6 +15,7 @@ import {
 import AddVideoModal from './AddVideoModal'
 import VideoCard from './VideoCard'
 import ClipCard from './ClipCard'
+import SocialAccountsManager from './SocialAccountsManager'
 
 interface Video {
   id: string
@@ -46,7 +47,7 @@ export default function Dashboard() {
   const [clips, setClips] = useState<Clip[]>([])
   const [isAddVideoModalOpen, setIsAddVideoModalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'videos' | 'clips'>('videos')
+  const [activeTab, setActiveTab] = useState<'videos' | 'clips' | 'accounts'>('videos')
 
   useEffect(() => {
     fetchVideos()
@@ -216,6 +217,16 @@ export default function Dashboard() {
               >
                 Clips ({clips.length})
               </button>
+              <button
+                onClick={() => setActiveTab('accounts')}
+                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === 'accounts'
+                    ? 'border-primary-500 text-primary-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Social Accounts
+              </button>
             </nav>
           </div>
         </div>
@@ -286,7 +297,9 @@ export default function Dashboard() {
               </div>
             )}
           </div>
-        )}
+        ) : activeTab === 'accounts' ? (
+          <SocialAccountsManager onAccountAdded={fetchVideos} />
+        ) : null}
       </div>
 
       {/* Add Video Modal */}

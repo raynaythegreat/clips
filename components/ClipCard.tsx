@@ -10,11 +10,13 @@ import {
   ClockIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
-  ArrowPathIcon
+  ArrowPathIcon,
+  ShareIcon
 } from '@heroicons/react/24/outline'
 import { format } from 'date-fns'
 import toast from 'react-hot-toast'
 import EditClipModal from './EditClipModal'
+import UploadModal from './UploadModal'
 
 interface Video {
   id: string
@@ -42,6 +44,7 @@ interface ClipCardProps {
 
 export default function ClipCard({ clip, onClipUpdated }: ClipCardProps) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
   const formatTime = (seconds: number) => {
@@ -107,6 +110,10 @@ export default function ClipCard({ clip, onClipUpdated }: ClipCardProps) {
 
   const handleEdit = () => {
     setIsEditModalOpen(true)
+  }
+
+  const handleUpload = () => {
+    setIsUploadModalOpen(true)
   }
 
   return (
@@ -178,13 +185,21 @@ export default function ClipCard({ clip, onClipUpdated }: ClipCardProps) {
           {/* Actions */}
           <div className="flex space-x-2">
             {clip.status === 'COMPLETED' && (
-              <button
-                onClick={handleDownload}
-                className="flex-1 btn-primary text-sm py-2"
-              >
-                <DownloadIcon className="w-4 h-4 mr-1" />
-                Download
-              </button>
+              <>
+                <button
+                  onClick={handleUpload}
+                  className="flex-1 btn-primary text-sm py-2"
+                >
+                  <ShareIcon className="w-4 h-4 mr-1" />
+                  Upload
+                </button>
+                <button
+                  onClick={handleDownload}
+                  className="px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                >
+                  <DownloadIcon className="w-4 h-4" />
+                </button>
+              </>
             )}
             
             <button
@@ -211,6 +226,15 @@ export default function ClipCard({ clip, onClipUpdated }: ClipCardProps) {
           clip={clip}
           onClose={() => setIsEditModalOpen(false)}
           onClipUpdated={onClipUpdated}
+        />
+      )}
+
+      {/* Upload Modal */}
+      {isUploadModalOpen && (
+        <UploadModal
+          clip={clip}
+          onClose={() => setIsUploadModalOpen(false)}
+          onUploadStarted={onClipUpdated}
         />
       )}
     </>
