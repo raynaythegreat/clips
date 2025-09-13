@@ -103,9 +103,29 @@ export default function ClipCard({ clip, onClipUpdated }: ClipCardProps) {
     }
   }
 
-  const handleDownload = () => {
-    // TODO: Implement download functionality
-    toast.success('Download feature coming soon!')
+  const handleDownload = async () => {
+    try {
+      const response = await fetch(`/api/clips/${clip.id}/download`)
+      
+      if (!response.ok) {
+        throw new Error('Download failed')
+      }
+
+      // Create blob and download
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${clip.title.replace(/[^a-zA-Z0-9]/g, '_')}.mp4`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+      
+      toast.success('Clip downloaded successfully!')
+    } catch (error) {
+      toast.error('Failed to download clip')
+    }
   }
 
   const handleEdit = () => {

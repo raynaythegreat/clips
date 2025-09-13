@@ -96,6 +96,7 @@ export default function CreateClipModal({ video, onClose, onClipCreated }: Creat
     setIsLoading(true)
     
     try {
+      // Create clip
       const response = await fetch('/api/clips', {
         method: 'POST',
         headers: {
@@ -113,7 +114,22 @@ export default function CreateClipModal({ video, onClose, onClipCreated }: Creat
         throw new Error(result.error || 'Failed to create clip')
       }
 
-      toast.success('Clip created successfully!')
+      // Start processing the clip
+      const processResponse = await fetch('/api/clips/process', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          clipId: result.clip.id,
+        }),
+      })
+
+      if (!processResponse.ok) {
+        throw new Error('Failed to start clip processing')
+      }
+
+      toast.success('Clip created and processing started!')
       reset()
       onClipCreated()
     } catch (error) {

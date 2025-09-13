@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '../auth/[...nextauth]/authOptions'
 import { prisma } from '@/lib/prisma'
 import { SocialMediaAutomation } from '@/lib/automation-service'
+import { VideoProcessor } from '@/lib/video-processing'
 import { z } from 'zod'
 import path from 'path'
 import fs from 'fs'
@@ -104,6 +105,7 @@ async function processUpload(
   socialAccount: any
 ): Promise<void> {
   const automation = new SocialMediaAutomation()
+  const videoProcessor = new VideoProcessor()
   
   try {
     // Update post status to posting
@@ -114,20 +116,32 @@ async function processUpload(
 
     await automation.initialize()
 
-    // Generate video file path (this would be the processed clip)
-    const videoPath = path.join(process.cwd(), 'temp', `${clip.id}.mp4`)
+    // Check if clip file exists
+    const clipPath = path.join(process.cwd(), 'temp', `clip_${clip.id}.mp4`)
     
-    // Check if video file exists
-    if (!fs.existsSync(videoPath)) {
-      throw new Error('Video file not found')
+    if (!fs.existsSync(clipPath)) {
+      throw new Error('Clip file not found. Please ensure the clip is processed first.')
     }
+
+    // Optimize video for the specific platform
+    const platformMap = {
+      'TIKTOK': 'tiktok' as const,
+      'INSTAGRAM': 'instagram' as const,
+      'YOUTUBE_SHORTS': 'youtube' as const
+    }
+
+    const optimizedPath = await videoProcessor.optimizeForPlatform(
+      clipPath,
+      platformMap[socialAccount.platform],
+      `${clip.id}_${socialAccount.platform}`
+    )
 
     // Upload based on platform
     let result
     switch (socialAccount.platform) {
       case 'TIKTOK':
         result = await automation.uploadToTikTok(
-          videoPath,
+          optimizedPath,
           clip.title,
           clip.description || '',
           {
@@ -139,7 +153,7 @@ async function processUpload(
         break
       case 'INSTAGRAM':
         result = await automation.uploadToInstagram(
-          videoPath,
+          optimizedPath,
           clip.title,
           clip.description || '',
           {
@@ -151,7 +165,7 @@ async function processUpload(
         break
       case 'YOUTUBE_SHORTS':
         result = await automation.uploadToYouTubeShorts(
-          videoPath,
+          optimizedPath,
           clip.title,
           clip.description || '',
           {
@@ -181,6 +195,9 @@ async function processUpload(
       where: { id: socialAccount.id },
       data: { lastUsed: new Date() }
     })
+
+    // Cleanup optimized file
+    await videoProcessor.cleanup(optimizedPath)
 
   } catch (error) {
     // Update post with error

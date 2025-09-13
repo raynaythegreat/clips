@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../auth/[...nextauth]/authOptions'
 import { prisma } from '@/lib/prisma'
+import { VideoProcessor } from '@/lib/video-processing'
 import { z } from 'zod'
-import ytdl from 'ytdl-core'
 
 const videoSchema = z.object({
   url: z.string().url('Invalid URL'),
@@ -24,17 +24,11 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { url, title } = videoSchema.parse(body)
 
-    // Validate YouTube URL
-    if (!ytdl.validateURL(url)) {
-      return NextResponse.json(
-        { error: 'Invalid YouTube URL' },
-        { status: 400 }
-      )
-    }
+    // Initialize video processor
+    const videoProcessor = new VideoProcessor()
 
     // Get video info
-    const videoInfo = await ytdl.getInfo(url)
-    const videoDetails = videoInfo.videoDetails
+    const videoInfo = await videoProcessor.getVideoInfo(url)
 
     // Check if video already exists
     const existingVideo = await prisma.video.findUnique({
@@ -51,11 +45,11 @@ export async function POST(request: NextRequest) {
     // Create video record
     const video = await prisma.video.create({
       data: {
-        title: title || videoDetails.title,
+        title: title || videoInfo.title,
         url,
-        thumbnail: videoDetails.thumbnails[0]?.url,
-        duration: parseInt(videoDetails.lengthSeconds),
-        description: videoDetails.description,
+        thumbnail: videoInfo.thumbnail,
+        duration: videoInfo.duration,
+        description: videoInfo.description,
         userId: session.user.id,
       }
     })
